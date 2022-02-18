@@ -1,0 +1,12 @@
+---
+layout: post
+title: Cocoa Scripting - fixing AppleScript's "duplicate" command
+date: '2016-05-16T18:06:00.003+01:00'
+author: Thomas Tempelmann
+tags: 
+modified_time: '2016-05-16T18:06:42.522+01:00'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-3853352100740324113
+blogger_orig_url: https://blog.tempel.org/2016/05/cocoa-scripting-fixing-applescripts.html
+---
+
+I have spent the past 6 weeks and over 200 hours (conveniently measured with the excellent <a href="https://timingapp.com/" target="_blank">Timing</a> app) on writing a scripting framework for OS X apps made with Xojo, based on the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ScriptableCocoaApplications" target="_blank">Cocoa Scripting</a> framework.<br /><br />During this time, I ran into a lot of things that were either not documented, hard to understand or even caused by bugs not fixed by Apple for over 10 years now.<br /><br />Here's a summary of things I like to share with other developers, not limited to Xojo.<br /><br /><br />A few people gave me valuable input in figuring this all out. My special thanks go to Mark Aldritt (author of the awesome Script Debugger), Ron Reuter (now-retired Mac developer) and Stefan Klieme. Furthermore, Jan Magens helped me debugging and improving scripting support for iClip.<br /><br /><br />

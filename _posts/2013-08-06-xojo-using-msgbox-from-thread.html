@@ -1,0 +1,16 @@
+---
+layout: post
+title: Xojo - Using MsgBox from a thread
+date: '2013-08-06T11:59:00.000+01:00'
+author: Thomas Tempelmann
+tags:
+- Xojo
+- Cocoa
+- Xojo.Timer
+- Xojo.Thread
+modified_time: '2013-08-06T14:49:03.951+01:00'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-1156214865521993527
+blogger_orig_url: https://blog.tempel.org/2013/08/xojo-using-msgbox-from-thread.html
+---
+
+I recently needed to debug some threaded REALbasic code. I could not use the IDE debugger because the issue I had occured&nbsp;only&nbsp;in built apps. Even worse, I needed to stop the thread at certain places so that I could investigate what it had done so far (i.e. writing a file, and looking at the data written).<br /><br />An easy way to do this usually is to use MsgBox - it stops the code execution until you press the OK button.<br /><br />However, calling MsgBox from within a thread is not working, at least not when building for Cocoa.<br /><br />The solution is to put the thread to sleep temporarily, then have non-threaded code call MsgBox, and when that's done, wake up the thread again.<br /><br />To put your own thread to sleep, call App.CurrentThread.Suspend.<br />To wake it up again, call its Resume function.<br /><br />Here's a code example of how I solved this. Place both methods into a Module, and invoke&nbsp;MsgBoxFromThread from your thread.<br /><br /><pre>Sub MsgBoxFromThread(msg as String)<br />  // Invoke this method to use MsgBox from within a thread.<br />  <br />  // Note: This is not multi-thread-safe! I.e, if you have more<br />  // than one thread from which you invoke this function, the<br />  // code needs to move away from single global/static variables<br />  // and instead maintain a queue for the threads and their<br />  // respective messages to be shown.</pre><pre>  // (See the "Tasks" project from the Xojo Examples to learn</pre><pre>  // how to maintain such a queue).<br />  <br />  dim currentThread as Thread = App.CurrentThread<br />  if currentThread = nil then<br />    // the main thread is active - we can simply call MsgBox here<br />    MsgBox msg<br />    return<br />  end if<br />  <br />  // Create a timer for executing the MsgBox instruction<br />  // and waking up the thread afterwards again<br />  static t as Timer<br />  if t = nil then<br />    t = new Timer<br />    AddHandler t.Action, AddressOf MsgBoxFromThreadShow<br />    t.Period = 0<br />  end if<br />  <br />  // Store the msg and thread for the Timer<br />  mMsg = msg<br />  mThread = currentThread<br />  <br />  // Start the timer and put this thread to sleep<br />  t.Mode = 1<br />  currentThread.Suspend<br />End Sub<br /><br />Private Sub MsgBoxFromThreadShow(t as Timer)<br />  MsgBox mMsg<br />  // Once MsgBox is finished, wake up the thread again:<br />  mThread.Resume<br />End Sub</pre>

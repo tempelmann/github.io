@@ -1,0 +1,12 @@
+---
+layout: post
+title: Implementing Undo - the normal and the easy way
+date: '2019-06-30T11:59:00.002+01:00'
+author: Thomas Tempelmann
+tags: 
+modified_time: '2019-06-30T11:59:22.630+01:00'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-1401082770665068547
+blogger_orig_url: https://blog.tempel.org/2019/06/implementing-undo-normal-and-easy-way.html
+---
+
+Ways of implementing Undo<br /><br />If you feel that implementing undo is too hard, maybe you've used the wrong approach.<br /><br />There are two quite different ways to handle Undo in a program.<br /><br />The most commonly used procedure is to provide an undo action for every action the user takes. For instance, if the user inserts a new value into a database, an undo action removing that data entry again would be put onto the undo stack. Similarly, when the user deletes an entry, you'd first save the to-be-deleted data into an action object that would perform a re-insertion of that data.<br /><br />This, however, can become quite a lot of code to write for every possible type of data change the user could enact.<br /><br />There is a simpler undo procedure, though: Instead of providing an inverse operation for each user operation, you could simple store the data's entire state, and restore it when performing an Undo operation.<br /><br />This simpler state-saving procedure only works well if it's not too costly to save the entire state. For example, if you want to provide undo in a simple text editor, saving the previous state for later undo would mean to save the following data entities: The entire text, the selected area (or cursor location) and the scroll position. While this would lead to saving the entire text for every time the user moves the cursor (that's usually the way to handle undo in text fields), it's not much memory wasted on a modern computer with its gigabytes of RAM.<br /><br />On the other hand, if the program is used to add, edit and remove items from a large database, this approach won't work efficiently, because it would require to save a copy of the entire database each time, which could easily exceed the capacities of the computer's memory - and it could be quite slow as well if the database is large.<br /><br />

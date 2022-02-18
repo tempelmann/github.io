@@ -1,0 +1,15 @@
+---
+layout: post
+title: Beware of a pitfall when reading the OS X clipboard with the Carbon API
+date: '2013-07-27T20:32:00.000+01:00'
+author: Thomas Tempelmann
+tags:
+- Carbon
+- Pasteboard
+- OS X
+modified_time: '2013-07-27T20:32:37.473+01:00'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-3476772637818530677
+blogger_orig_url: https://blog.tempel.org/2013/07/beware-of-pitfall-when-reading-os-x.html
+---
+
+<br />This is a heads-up for all those who read the Clipboard with the Carbon API (e.g. PasteboardCreate).<br /><br />This is about rare but possible issue where you might be reading the clipboard contents incorrectly.<br /><br />A very simple demo for this is the following:<br /><br /><ol><li>Open Automator to create a new Workflow.</li><li>Add a <b><i>Run Shell Script</i></b>, with the command: <b>ls -l /</b></li><li>Add a <b><i>Copy to Clipboard</i></b>.</li><li>Run it.</li></ol><br />Launch TextEdit and Paste into a document. You should be seeing the listing of your root folder.<br />That's what is expected.<br /><br />Now try your Carbon app and see what it takes from the same clipboard.<br />Does it only see one line of the clipboard ("<i>total NNN</i>")? Then you're subject to this issue.<br /><br />Well, here's the explanation: That darn automator operation puts each line as a separate item into the pasteboard instead of putting all lines into a single text item. (The Finder does that, too, if you Copy a multi-selection of files.)<br /><br />The fact that this Automator operation does it this way is suggesting that other NeXT (Cocoa) based apps may do the same, so you better be prepared for it.<br /><br />To deal with this, you'll have to iterate over all items (whose count you find via PasteboardGetItemCount), and concatenate them with a line delimiter in between.<br />Or use NSPasteboard and get the NSStringPboardType, which contains all in one, with the proper delimiters.<br /><br />Note: You can access the pasteboard using any of the 3 APIs (Scrap Mgr, Carbon Pastebaord, NSPasteboard) at the same time. E.g., if you put a new item into the Carbon Pasteboard, it becomes instantly available to the other APIs as well. Meaning that the 3 pasteboards are fully synchronized.<br /><br />Therefore, you could just handle this special case like this, provided you're interested in text:<br /><br />&nbsp;if PasteboardGetItemCount() &gt; 1 then<br />&nbsp; &nbsp;txt = [[NSPasteboard pasteboardWithName:NSGeneralPboard] dataForType:NSStringPboardType]<br />&nbsp;end<br /><br />

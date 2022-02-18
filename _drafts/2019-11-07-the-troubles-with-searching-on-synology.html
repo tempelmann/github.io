@@ -1,0 +1,12 @@
+---
+layout: post
+title: The troubles with searching on Synology NAS volumes
+date: '2019-11-07T12:54:00.001Z'
+author: Thomas Tempelmann
+tags: 
+modified_time: '2019-11-07T12:54:56.783Z'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-4862519934495363955
+blogger_orig_url: https://blog.tempel.org/2019/11/the-troubles-with-searching-on-synology.html
+---
+
+Iterating over all directories via AFP is much faster than via SMB.<br /><br />Spotlight (called&nbsp;<i>Universal Search</i> in Synology's Web UI) is not working right:<br /><br />Via SMB, it may not find any or all results unless you use the "-live" option.<br />Via AFP, it works without the "-live" option, but it never finishes.<br />Meaning that in both cases, you cannot tell when the search has finished.<br /><br /><br /><div style="background-color: white; font-family: Menlo; font-size: 12px; font-stretch: normal; line-height: normal;"><span style="font-variant-ligatures: no-common-ligatures;">mdfind -onlyin /Volumes/Downloads/ "kMDItemFSName == '*.exe'cd"</span></div>

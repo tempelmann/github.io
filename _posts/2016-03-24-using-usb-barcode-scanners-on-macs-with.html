@@ -1,0 +1,15 @@
+---
+layout: post
+title: Using USB barcode scanners on Macs with Xojo
+date: '2016-03-24T15:10:00.005Z'
+author: Thomas Tempelmann
+tags:
+- Xojo
+- Apple
+- OS X
+modified_time: '2016-03-24T15:13:32.461Z'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-5681790387918240927
+blogger_orig_url: https://blog.tempel.org/2016/03/using-usb-barcode-scanners-on-macs-with.html
+---
+
+Barcode scanners translate 1D and 2D bar codes, such as Code128 and QR Code, into readable characters.<br /><br />Usually, handheld bar code scanners with a USB interface simulate a keyboard by default. With that, they work out of the box: If you scan a code with such a reader, it'll send keyboard strokes to the computer.<br /><br />This makes them easy to use, but it also causes some issues:<br /><ul><li>If you have a program that expects input from a scanner, you have to make sure the typed characters are properly caught by your program and not go somewhere they don't belong. E.g, if the user switches accidentally to another program and then scans a bar code, not only will your program not be able to get the code from the scanner, but the keystrokes may cause odd effects in the the program that's active then. It's like your cat walking over your keyboard and wonder what'll go wrong.</li><li>Even worse, it can pose a security threat. Hackers have been able to show scanners customized bar codes that contained key strokes that would lead to remote controlling computers that the user was not supposed to access that way. Imagine a so-called "kiosk" terminal that's supposed to run only a particular application but gets quit by a alt-F4 or cmd-Q keystroke, then opening another program such as a Terminal to mess with the computer. In other words, using a bar code scanner in the "keyboard emulation" mode opens the computer to all kinds of abuse that you may have wanted to prevent by not giving the user a keyboard and mouse.</li></ul><div><br />One way to prevent these issues is to put the scanner into a mode where it does not emulate a keyboard any more. That mode is usually called a "HID POS" or "USB OEM" mode. In such a mode, &nbsp;the software needs to run special code to communicate with the scanner directly. Another option would be to not use the scanner's USB interface but rather use a serial interface (many scanners can be used with either) and then use a Serial-to-USB adapter to connect the serially operated scanner to the Mac or PC.</div><div><br /></div><div>In case you want to use the USB HID POS mode with a scanner (e.g. GoDEX models), I've posted some details and a demo project on the Xojo forum a while ago:&nbsp;<a href="https://forum.xojo.com/24557">https://forum.xojo.com/24557</a></div><div><br /></div><div>In the meantime, I've also managed to scanners from Datalogic (Gryphon 44xx models) and similar scanners using the sparely documented IBM / Toshiba "OEM" USB protocol. If you are interested in supporting those, contact me directly.</div><div><br /></div>

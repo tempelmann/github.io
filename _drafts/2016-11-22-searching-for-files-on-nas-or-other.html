@@ -1,0 +1,12 @@
+---
+layout: post
+title: Searching for files on a NAS or other network drive from a Mac?
+date: '2016-11-22T22:50:00.001Z'
+author: Thomas Tempelmann
+tags: 
+modified_time: '2016-11-22T22:50:42.863Z'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-1213448647722790332
+blogger_orig_url: https://blog.tempel.org/2016/11/searching-for-files-on-nas-or-other.html
+---
+
+I've been maintaining (and selling) my program <i>Find Any File</i>&nbsp;(<i>FAF</i>) for OS X for over 10 years now.<br /><br />Initially, it was only a quick hack to fill the gap that Apple left when it disbandoned the good old <i>Find File</i> aka. <i>Sherlock</i>&nbsp;in favor of <i>Spotlight</i>.<br /><br />While Spotlight is great when searching for the contents of a user's documents, it's not so suitable for searching files by name that are either not part of the user's documents or even stored on a remote network volume that's not managed by a Mac OS X Server system.<br /><br />FAF fills this gap. It's made specially for finding files by name. So, if you know you should have a file with a particular partial name somewhere, FAF will help you find it.<br /><br />That's nothing special. There's been several tools around for that, EasyFind being the most popular one.<br /><br />However, today I found out something surprising:<br /><br />While EasyFind and FAF are nearly equal in speed when it comes to searching your local startup disk, there are huge differences when it comes to searching on a network volume.<br /><br />Here are some numbers (I've repeated the same search several times with both apps, to make sure both have about the same amount of cached information to benefit from):<br /><br />Searching ....<br /><br /><br />Mist - ich hatte mich vermessen - FAF ist nur deswegen schneller, weil NAS1 sparsebundles hat, die FAF einfach ausläßt, EF aber nicht. Davon abgesehen ist FAF sogar langsamer als EF!

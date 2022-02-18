@@ -1,0 +1,12 @@
+---
+layout: post
+title: Apple's Gate Keeper Path Randomization and the death of apps in zip files
+date: '2016-08-27T13:44:00.000+01:00'
+author: Thomas Tempelmann
+tags: 
+modified_time: '2016-08-27T13:44:11.709+01:00'
+blogger_id: tag:blogger.com,1999:blog-8797526579651167122.post-1230444309346700871
+blogger_orig_url: https://blog.tempel.org/2016/08/apples-gate-keeper-path-randomization.html
+---
+
+macOS Sierra (10.12) will bring us a new security feature called&nbsp;Gate Keeper Path Randomization (GKPR, aka. App Translocation).<br /><br />In short, it will lauch apps that were delivered inside a zip file from a randomized path. That has the effect that if the app looks for files that it expects next to it, it won't see them, because any other files that were in the same zip file won't be moved along to that randomized path.<br /><br />For example, if you download a zip file that contains an app and some data files, the zip will end up usually in your ~/Downloads folder. Either Safari or you will then unzip the downloaded file, at which point Gate Keeper will quarantine all files and folders from the zip file. If you then launch the app, it won't run from ~/Downloads but from a random path like /private/var/folders/xy/ycnxcbww8xl6v7608k8wnrjh0000g1. The apps default directory and its bundle's path will both point to that randomized path. Which means that the app won't be able to locate the data files it came with.<br /><br />The reason behind this behavior is a fairly obscure "dylib injection" security hole<br /><br />...<br /><br /><a href="http://arstechnica.com/apple/2016/06/raw-shooting-a-harsher-gatekeeper-and-more-obscure-macos-and-ios-10-changes/">http://arstechnica.com/apple/2016/06/raw-shooting-a-harsher-gatekeeper-and-more-obscure-macos-and-ios-10-changes/</a><br />        <br /><div class="p1"><span class="s1"><i>the changes to Gatekeeper send a subtle message from Apple to developers: we can’t make you use the Mac App Store, but we can at least try to make you sign your apps.</i></span></div>
